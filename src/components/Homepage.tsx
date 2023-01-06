@@ -15,7 +15,7 @@ const Homepage = () => {
   const {data, isFetching, error, isLoading} = useGetCryptosQuery(10)
   const globalStats = data?.data?.stats
   
-  if(isFetching) return 'Loading...'
+  if(isFetching) return <h2>Loading...</h2>
 
   return (
     <>
