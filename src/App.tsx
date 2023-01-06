@@ -21,9 +21,7 @@ function App() {
             <Routes>
               <Route index element={<Homepage/>} />
               <Route path='/exchanges' element={<Exchanges/>} />
-              <Route path='/cryptocurrencies' element={<Cryptocurrencies simplified={false}/>}>
-                <Route path='crypto/:coinId' element={<CryptoDetails/>} />
-              </Route>
+              <Route path='/cryptocurrencies' element={<Cryptocurrencies simplified={false}/>}/>
               <Route path='/crypto/:coinId' element={<CryptoDetails/>} />
               <Route path='/news' element={<News simplified={false}/>} />
             </Routes>

@@ -19,7 +19,7 @@ const News = ({simplified}:{simplified:boolean}) => {
 
   return (
     <Row gutter={[24,24]}>
-      {!simplified?<Col span={24}>                                                                                                                                                 //alguna de las opciones contendra lo que voy escribiendo en el input
+      {!simplified?<Col span={24}>                                                                                                                                                 {/*alguna de las opciones contendra lo que voy escribiendo en el input*/}
         <Select showSearch className='select-news' placeholder='Select a Crypto' optionFilterProp='children' onChange={value => setCategory(value)} filterOption={(input,option) => option.children.toLowerCase().indexOf(input.toLowerCase())>=0}>
             <Option value='Cryptocurrency'>Cryptocurrency</Option>
             {cryptos?.data?.coins.map((coin:any) => <Option value={coin.name}>{coin.name}</Option>)}
