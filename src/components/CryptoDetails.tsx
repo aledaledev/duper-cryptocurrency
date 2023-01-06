@@ -3,18 +3,26 @@ import HTMLReactParser from 'html-react-parser'
 import {useParams} from 'react-router-dom'
 import millify from 'millify'
 import {Col, Row, Typography, Select} from 'antd'
-import { useGetCryptoDetailsQuery } from '../services/cryptoApi'
+import { useGetCryptoDetailsQuery, useGetCryptoHistoryQuery } from '../services/cryptoApi'
 import { CheckOutlined, DollarCircleOutlined, ExclamationCircleOutlined, FundOutlined, MoneyCollectOutlined, NumberOutlined, StopOutlined, ThunderboltOutlined, TrophyOutlined } from '@ant-design/icons'
+import LineChart from './LineChart'
 
 const {Title, Text} = Typography
 const { Option } = Select
 
 const CryptoDetails = () => {
 
-  const {coinId} = useParams()
+  const {coinId} = useParams() as {coinId:string}
   const [timePeriod, setTimePeriod] = useState('7d')
-  const {data, isFetching,error} = useGetCryptoDetailsQuery(coinId)
-  const crypto = data?.data?.coin
+  const {data:coin, isFetching} = useGetCryptoDetailsQuery(coinId)
+  const {data } = useGetCryptoHistoryQuery({cryptoId:coinId,timePeriod})
+  
+  if(isFetching) return <h2>Loading...</h2>
+  
+  const crypto = coin?.data?.coin
+  const coinHistory = data?.data
+
+  console.log(coinHistory);
   console.log(crypto);
   
   const time = ['3h', '24h', '7d', '30d', '1y', '3m', '3y', '5y'];
@@ -49,6 +57,7 @@ const CryptoDetails = () => {
       <Select defaultValue='7d' className='select-timeperiod' placeholder='Select Time Period' onChange={value => setTimePeriod(value)}>
         {time.map(date => <Option key={date}>{date}</Option>)}
       </Select> 
+      <LineChart coinHistory={coinHistory} currentPrice={millify(Number(crypto?.price))} coinName={crypto?.name}/>
       <Col className='stats-container'>
           <Col className='coin-value-statistics'>
             <Col className='coin-value-statistics-heading'>
@@ -92,8 +101,8 @@ const CryptoDetails = () => {
       <Col className='coin-desc-link'>
         <Row className='coin-desc'>
           <Title level={3} className='coin-details-heading'>
-              What is {CryptoDetails.name}?
-              {HTMLReactParser(crypto?.description)}
+              What is {crypto?.name}?
+              {HTMLReactParser(String(crypto?.description))}
           </Title>
         </Row>
         <Col className='coin-links'>
