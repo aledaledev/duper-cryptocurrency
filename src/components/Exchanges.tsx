@@ -3,9 +3,17 @@ import React from 'react'
 import { useGetCryptoExchangeQuery } from '../services/cryptoApi'
 import millify from 'millify'
 
+interface RowTypes {
+  key: string;
+  exchange: string[];
+  volume: string;
+  markets: number;
+  btcPrice: string;
+}
+
 const Exchanges = () => {
 
-  const {data, isFetching} = useGetCryptoExchangeQuery()
+  const {data, isFetching} = useGetCryptoExchangeQuery('')
 
   if(isFetching) return <h3>Loading...</h3>
 
@@ -24,10 +32,8 @@ const Exchanges = () => {
       title: 'Exchange',
       dataIndex: 'exchange',
       key: 'exchange',
-      render:(_,{exchange}) => {
-        console.log(exchange);
-        
-        const [rank,iconUrl,name] = exchange
+      render:(_:any,data:RowTypes) => {        
+        const [rank,iconUrl,name] = data.exchange
         return <div style={{display:'flex',alignItems:'center',gap:'.6rem'}}>
           <span style={{fontWeight:'600'}}>{rank}.</span>
           <img src={iconUrl} width={26} alt="image" />
